@@ -1,5 +1,7 @@
 package com.example.aresnick.nytimessearch.activities;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -13,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.aresnick.nytimessearch.Article;
@@ -35,13 +35,11 @@ import java.util.ArrayList;
 import cz.msebera.android.httpclient.Header;
 
 public class SearchActivity extends AppCompatActivity {
-
-    EditText etQuery;
     RecyclerView rvArticles;
-    Button btnSearch;
-
     ArrayList<Article> articles;
     ArticleAdapter adapter;
+    String query;
+
     private ShareActionProvider mShareActionProvider;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
 
@@ -50,6 +48,13 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         setupViews();
+/*
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())){
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
+        }
+        */
         // Add the scroll listener
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         rvArticles.setLayoutManager(staggeredGridLayoutManager);
@@ -67,11 +72,8 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-
     public void setupViews(){
-        etQuery = (EditText) findViewById(R.id.etQuery);
         rvArticles = (RecyclerView) findViewById(R.id.rvArticles);
-        btnSearch = (Button) findViewById(R.id.btnSearch);
         articles = new ArrayList<>();
         adapter = new ArticleAdapter(this, articles);
 
@@ -107,15 +109,24 @@ public class SearchActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView1 = (SearchView) menu.findItem(R.id.miRequest).getActionView();
         MenuItem searchItem = menu.findItem(R.id.miRequest);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         // Expand the search view and request focus
         searchItem.expandActionView();
         searchView.requestFocus();
+        searchView1.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView1.setIconifiedByDefault(false);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String q) {
                 searchView.clearFocus();
+                Toast.makeText(SearchActivity.this, query, Toast.LENGTH_LONG).show();
+                query = q;
+                onArticleSearch(searchView);
                 return true;
             }
 
@@ -153,27 +164,43 @@ public class SearchActivity extends AppCompatActivity {
         */
 
     }
-
 /*
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.miRequest:
+                searchView.setIconified(false);
+                return true;
+        }
+
+        return false;
+    }
+*/
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.action_settings) {
+        Toast.makeText(this, id, Toast.LENGTH_LONG).show();
+        //Log.d(1, "hey");
+        if(id == R.id.miRequest) {
+            Toast.makeText(this, "pressed", Toast.LENGTH_SHORT).show();
             return true;
         }
 
-        if (SharedMenu.onOptionsItemSelected(item, this) == false){
+       /* if (SharedMenu.onOptionsItemSelected(item, this) == false){
             return true;
         }
 
+*/
 
         return super.onOptionsItemSelected(item);
     }
-*/
+
 
     public void onArticleSearch(View view) {
-        String query = etQuery.getText().toString();
+      //  String query1 = (String) searchView.getText().toString();
 
         //Toast.makeText(this, "Searching for" + query, Toast.LENGTH_LONG).show();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -207,7 +234,6 @@ public class SearchActivity extends AppCompatActivity {
         // Deserialize API response and then construct new objects to append to the adapter
         // Add the new objects to the data source for the adapter
 
-        String query = etQuery.getText().toString();
         Toast.makeText(this, "Searching for" + query, Toast.LENGTH_LONG).show();
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "http://api.nytimes.com/svc/search/v2/articlesearch.json";

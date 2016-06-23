@@ -2,13 +2,16 @@ package com.example.aresnick.nytimessearch.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,6 +106,25 @@ public class SearchActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         // Inflate the menu; this adds items to the action bar if it is present
         MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.miRequest);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        // Expand the search view and request focus
+        searchItem.expandActionView();
+        searchView.requestFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
 
 /*
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -130,7 +152,6 @@ public class SearchActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
         */
 
-        return true;
     }
 
 /*

@@ -18,9 +18,11 @@ import com.example.aresnick.nytimessearch.R;
 
 public class ArticleActivity extends AppCompatActivity {
     private Intent shareIntent;
+    //@BindView(R.id.wvArticle) WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //ButterKnife.bind(this);
         super.onCreate(savedInstanceState);
         RecyclerView rvArticle = (RecyclerView) findViewById(R.id.rvArticles);
         setContentView(R.layout.activity_article);
@@ -28,30 +30,6 @@ public class ArticleActivity extends AppCompatActivity {
    //     setSupportActionBar(toolbar);
 
         Article article = (Article) getIntent().getSerializableExtra("article");
-
-        /*
-        // Add the scroll listener
-        rvArticle.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-                customLoadMoreDataFromApi(page);
-            }
-        });
-        // Append more data into the adapter
-        // This method probably sends out a network request and appends new data items to your adapter.
-        public void customLoadMoreDataFromApi(int offset) {
-            // Send an API request to retrieve appropriate data using the offset value as a parameter.
-            // Deserialize API response and then construct new objects to append to the adapter
-            // Add the new objects to the data source for the adapter
-            items.addAll(moreItems);
-            // For efficiency purposes, notify the adapter of only the elements that got changed
-            // curSize will equal to the index of the first element inserted because the list is 0-indexed
-            int curSize = adapter.getItemCount();
-            adapter.notifyItemRangeInserted(curSize, items.size() - 1);
-        }
-        */
 
         WebView webView = (WebView) findViewById(R.id.wvArticle);
         assert webView != null;
@@ -68,6 +46,7 @@ public class ArticleActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //ButterKnife.bind(this);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_article, menu);
 

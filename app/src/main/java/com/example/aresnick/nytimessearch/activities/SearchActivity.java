@@ -32,10 +32,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class SearchActivity extends AppCompatActivity {
-    RecyclerView rvArticles;
+
+    @BindView(R.id.rvArticles) RecyclerView rvArticles;
     ArrayList<Article> articles;
     ArticleAdapter adapter;
     String query;
@@ -48,6 +51,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         setupViews();
+        ButterKnife.bind(this);
 
         // Add the scroll listener
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
@@ -67,7 +71,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
     public void setupViews(){
-        rvArticles = (RecyclerView) findViewById(R.id.rvArticles);
+        ButterKnife.bind(this);
         articles = new ArrayList<>();
         adapter = new ArticleAdapter(this, articles);
 

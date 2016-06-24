@@ -4,11 +4,15 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="wrap_content"
+        android:padding="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_height="wrap_content"
         android:id="@+id/ivImage"
         android:src="@mipmap/ic_launcher"
-        android:scaleType="center"/>
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"/>
 
     <TextView
         android:id="@+id/tvTitle"
@@ -16,5 +20,11 @@
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:ellipsize="end"
+        android:background="@color/yellow"
         android:text="TextView"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivWhitePadding" />
 </LinearLayout>

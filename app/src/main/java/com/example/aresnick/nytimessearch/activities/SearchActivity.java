@@ -48,13 +48,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         setupViews();
-/*
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())){
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            doMySearch(query);
-        }
-        */
+
         // Add the scroll listener
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         rvArticles.setLayoutManager(staggeredGridLayoutManager);
@@ -109,11 +103,11 @@ public class SearchActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView1 = (SearchView) menu.findItem(R.id.miRequest).getActionView();
         MenuItem searchItem = menu.findItem(R.id.miRequest);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
         // Expand the search view and request focus
         searchItem.expandActionView();
         searchView.requestFocus();

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class ArticleAdapter extends
         String thumbnail = article.getThumbNail();
         viewHolder.tvTitle.setText(article.getHeadline());
         if (!TextUtils.isEmpty(thumbnail)){
-            Picasso.with(mContext).load(thumbnail).into(viewHolder.imageView);
+            Glide.with(mContext).load(thumbnail).into(viewHolder.imageView);
         }
     }
 
